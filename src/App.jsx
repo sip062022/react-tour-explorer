@@ -11,41 +11,59 @@ function App() {  // creates function for the app
   const [error, setError] = useState(null);  // uses useState for error
   const [selectedDestination, setSelectedDestination] = useState("All");  // uses useState for storing selected option
 
-  useEffect(() => { // arrow function for useEffect
-    const fetchTours = async () => {  // creates constant for fetching the tour
-      setLoading(true);  // changes loading to being true
-      setError(null);  // setting to no error
-      try {
-        const res = await fetch(API_URL); // fetches the url from the api url const
-        if (!res.ok) throw new Error("Failed to fetch tours."); // if response is not ok, state error message
-        const data = await res.json();  // parse response
-        setTours(data);  // saves tours
-      } catch (err) {  // catches error
-        setError(err.message); // log error message
-      } finally {
-        setLoading(false);  // after everything, set loading to false
-      }
-    };
-
-    fetchTours();  // runs fetchTours function
+  const fetchTours = async () => {  // const fetchTours
+    setLoading(true);  // set loading to true
+    setError(null);  // set error to null
+    try {
+      const res = await fetch(API_URL);  // fetch the url
+      if (!res.ok) throw new Error("Failed to fetch tours."); // if response is not ok, throw error code
+      const data = await res.json();  // parse the data
+      setTours(data); // set the tour data
+    } catch (err) { // catch errors
+      setError(err.message);  // if error, show error message
+    } finally {
+      setLoading(false);  // set loading to false after everything
+    }
+  };
+  
+  useEffect(() => {
+    fetchTours(); // runs the fetchTours function
   }, []);
 
   return (  // returns
     <main className="App">    {/* container for the info */}
       <h1>Tour Explorer</h1>    {/* App title */}
-      <DestinationSelector
-        tours={tours}   {/* add tours in here */}
-        selected={selectedDestination}    {/* add selected destination in here */}
-        onChange={setSelectedDestination}    {/* if selected destination changes, change result */}
+
+      {tours.length > 0 && (  // if >0 tours
+        <DestinationSelector
+          tours={tours} // Full tour list
+          selected={selectedDestination} // Currently selected tour
+          onChange={setSelectedDestination} // updated selected tour
+        />
+      )}
+
+      {tours.length === 0 && !loading && !error && ( // if no more tours and no error
+        <div className="no-tours"> {/* no button for more tours */}
+          <p>No tours left. Refresh to reload.</p> {/* no more tours message */}
+          <button onClick={fetchTours}>Refresh</button> {/* refresh the button when refresh */}
+        </div>
+      )}
+
+      {/* displays the filtered tours */}
+      
+      {(tours.length > 0 || loading || error) && (
+
+      <Gallery   
+        tours={tours} // tour list
+        loading={loading} // loading state
+        error={error}  // error state
+        selected={selectedDestination}  // selected tour
+        setTours={setTours}  // set tours function
       />
-      <Gallery   {/* displays the filtered tours */}
-        tours={tours}
-        loading={loading}
-        error={error}
-        selected={selectedDestination}
-        setTours={setTours}
-      />
-    </main>
+      )}
+
+      </main>
+      
   );
 }
 
