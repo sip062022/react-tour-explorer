@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"; // imports the use state from react
-import Gallery from "./Gallery"; // import Gallery.jsx
-import DestinationSelector from "./DestinationSelector";  // import DestinationSelector.jsx
+import Gallery from "./components/Gallery"; // import Gallery.jsx
+import DestinationSelector from "./components/DestinationSelector";  // import DestinationSelector.jsx
 import "./App.css"; // import styling
 
-const API_URL = "https://course-api.com/react-tours-project";  // creates const for the api url
+const API_URL = "https://api.allorigins.win/raw?url=https://course-api.com/react-tours-project";  // creates const for the api url
 
 function App() {  // creates function for the app
   const [tours, setTours] = useState([]);   // uses useState for holding tours
@@ -50,7 +50,7 @@ function App() {  // creates function for the app
       )}
 
       {/* displays the filtered tours */}
-      
+
       {(tours.length > 0 || loading || error) && (
 
       <Gallery   
