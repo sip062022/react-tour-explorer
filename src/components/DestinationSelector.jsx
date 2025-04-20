@@ -1,6 +1,6 @@
 import React from "react";  // imports from react
 
-function DestinationSelector({ tours, selected, onChange }) { // creates a function for the destination selector
+function DestinationSelector({ tours, selected, destinationChange }) { // creates a function for the destination selector
   const uniqueDestinations = ["All", ...new Set(tours.map((tour) => tour.name))];  // gets all unique destinations
 
   return (  // returns
@@ -10,7 +10,7 @@ function DestinationSelector({ tours, selected, onChange }) { // creates a funct
       <select   /* Dropdown menu (controlled component) */
         id="destination"
         value={selected} // creates value as selected input
-        onChange={(e) => onChange(e.target.value)} // Pass selected value to App.jsx
+        onChange={(e) => destinationChange(e.target.value)} // Pass selected value to App.jsx
       >
         {/* Render dropdown options */}
         {uniqueDestinations.map((name) => (

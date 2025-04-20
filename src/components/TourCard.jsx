@@ -2,7 +2,7 @@ import React from "react";  // import from react
 
 function TourCard({ tour, setTours }) { // function for tourcard
   const handleRemove = () => { // handle removing a tour
-    setTours((prevTours) => prevTours.filter((t) => t.id !== tour.id)); // filter out tours
+    setTours((prevTours) => prevTours.filter((x) => x.id !== tour.id)); // filter out tours
   };
 
   return (

@@ -3,7 +3,7 @@ import Gallery from "./components/Gallery"; // import Gallery.jsx
 import DestinationSelector from "./components/DestinationSelector";  // import DestinationSelector.jsx
 import "./App.css"; // import styling
 
-const API_URL = "https://api.allorigins.win/raw?url=https://course-api.com/react-tours-project";  // creates const for the api url
+const API_URL = "https://api.allorigins.win/get?url=https://course-api.com/react-tours-project";  // creates const for the api url
 
 function App() {  // creates function for the app
   const [tours, setTours] = useState([]);   // uses useState for holding tours
@@ -18,7 +18,8 @@ function App() {  // creates function for the app
       const res = await fetch(API_URL);  // fetch the url
       if (!res.ok) throw new Error("Failed to fetch tours."); // if response is not ok, throw error code
       const data = await res.json();  // parse the data
-      setTours(data); // set the tour data
+      const parsedData = JSON.parse(data.contents); // updated to parse data with CORS issue
+      setTours(parsedData); // set the tour data
     } catch (err) { // catch errors
       setError(err.message);  // if error, show error message
     } finally {
@@ -38,7 +39,7 @@ function App() {  // creates function for the app
         <DestinationSelector
           tours={tours} // Full tour list
           selected={selectedDestination} // Currently selected tour
-          onChange={setSelectedDestination} // updated selected tour
+          destinationChange={setSelectedDestination} // updated selected tour
         />
       )}
 
